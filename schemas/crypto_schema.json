@@ -1,0 +1,43 @@
+{
+   "title":"CryptoPrices",
+   "type":"object",
+   "required":["crypto_name", "time", "values"],
+   "properties":{
+      "crypto_name":{
+         "type":"string",
+         "description":"Nombre de la crypto moneda."
+      },
+      "time":{
+         "type":"string",
+         "description":"Tiempo del llamado al recurso."
+      },
+      "values": {
+        "type": "array",
+        "description": "Valores de respuesta de la API",
+          "items":{
+            "properties":{
+              "Parametros": {
+                "type": "object",
+                "description": "Parametros de envio a la API"
+              },
+              "Compra_sin_comisiones": {
+                "type": "number",
+                "description": "Compra sin comisiones"
+              },
+              "Compra_con_comisiones": {
+                "type": "number",
+                "description": "Compra con comisiones"
+              },
+              "Venta_sin_comisiones": {
+                "type": "number",
+                "description": "Venta sin comisiones"
+              },
+              "Venta_con_comisiones": {
+                "type": "number",
+                "description": "Venta con comisiones"
+              }
+            }
+          }
+      }
+   }
+}
