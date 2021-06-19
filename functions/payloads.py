@@ -21,10 +21,10 @@ bitso_payloads = [{"coin": "BTC", "fiat": "ARS", "vol": 500},
                   {"coin": "DAI", "fiat": "ARS", "vol": 1}
                   ]
 
-buda_payloads = [{'coin': 'BTC', "fiat": "ars", 'vol': 0.5},
-                 {'coin': 'ETH', "fiat": "ars", 'vol': 0.5},
-                 {'coin': 'BCH', "fiat": "ars", 'vol': 0.5},
-                 {'coin': 'LTC', "fiat": "ars", 'vol': 0.5}
+buda_payloads = [{'coin': 'BTC', "fiat": "ARS", 'vol': 0.5},
+                 {'coin': 'ETH', "fiat": "ARS", 'vol': 0.5},
+                 {'coin': 'BCH', "fiat": "ARS", 'vol': 0.5},
+                 {'coin': 'LTC', "fiat": "ARS", 'vol': 0.5}
                  ]
 
 buenbit_payloads = [{'coin': 'BTC', 'fiat': 'ARS'},
@@ -48,7 +48,7 @@ ripio_payloads = [{'coin': 'BTC'},
                   {'coin': 'LTC'}
                   ]
 
-CRYPTO_LIST = [
+CRYPTO_PAYLOAD_LIST = [
     [argenBTC_url,     argenBTC_payloads],
     [bitex_url,        bitex_payloads],
     [bitso_url,        bitso_payloads],

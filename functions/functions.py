@@ -1,12 +1,13 @@
 from schemas.validate_schema import validate_crypto_prices_for_schema
+from model.cryptoCurrencyPrices_model import CryptoCurrencyPrices
 from model.cryptoCurrency_model import CryptoCurrency
-from model.cryptoPrices_model import CryptoPrices
 from datetime import datetime
 from log.logger import Log
 import requests
 
 # GLOBAL VALUES #
 logger = Log().getLogger(__name__)
+time_out = 60
 
 
 def get_crypto_name_by_url(url: str) -> str:
@@ -29,19 +30,27 @@ def get_str_payload(payload: dict) -> str:
         payload_str = ""
         for p in payload:
             payload_str = payload_str + '/' + str(payload[p])
-
         return payload_str
+
     except Exception as e:
         logger.error(f'Error en la transformacion del payload'
                      f' de los parametros, {e}')
 
 
-def get_url_complete_with_payload(url: str, payload: dict) -> str:
-    """ Retorno la URL completa junto con su payload para llamar a la API. """
-    payload = get_str_payload(payload)
-    url_complete = url + payload
+def get_url_complete(url: str, payload: dict) -> str:
+    """ Retorno la URL completa junto con su payload para llamar a la API.
 
-    return url_complete
+    :param url: str
+    :param payload: dict
+    :return: str
+    """
+    try:
+        payload = get_str_payload(payload)
+        url_complete = url + payload
+        return url_complete
+
+    except Exception as e:
+        logger.error(f'Error en el retorno de la URL completa, error: {e}')
 
 
 def get_response_by_url(url: str) -> dict:
@@ -51,14 +60,14 @@ def get_response_by_url(url: str) -> dict:
     :return: dict
     """
     try:
-        response = requests.get(url=url, timeout=10)
+        response = requests.get(url=url, timeout=time_out)
         return response.json()
     except Exception as e:
         logger.error(f'Error en el retorno del response de '
                      f'url: "{url}", error: "{e}"')
 
 
-def get_values_from_crypto_result(url: str, payloads: list[dict]) -> list[dict]:
+def get_crypto_currency_values_json(url: str, payloads: list[dict]) -> list[dict]:
     """ Retorna el crypto_json con sus llamados por paramentos de
     cambio de la moneda.
 
@@ -71,7 +80,7 @@ def get_values_from_crypto_result(url: str, payloads: list[dict]) -> list[dict]:
 
         for payload in payloads:
             crypto_result = dict()
-            URL = get_url_complete_with_payload(url, payload)
+            URL = get_url_complete(url, payload)
 
             results = get_response_by_url(URL)
 
@@ -89,18 +98,18 @@ def get_values_from_crypto_result(url: str, payloads: list[dict]) -> list[dict]:
         logger.error(f'Error al llamar a la API, error: "{e}"')
 
 
-def get_crypto_prices(url: str, payloads: list[dict]) -> CryptoPrices:
+def get_crypto_currency_prices(url: str, payloads: list[dict]) -> CryptoCurrencyPrices:
     """ Retorno el nuevo CryptoPrices armado con todos sus valores
     llamados de su parameters.
 
     :param url: str
     :param payloads: list[dict]
-    :return: CryptoPrices
+    :return: CryptoCurrencyPrices
     """
     try:
         crypto_name = get_crypto_name_by_url(url)
         time_now = get_str_time_now()
-        result_json_list = get_values_from_crypto_result(url, payloads)
+        result_json_list = get_crypto_currency_values_json(url, payloads)
 
         evaluate_crypto = {"crypto_name": crypto_name,
                            "time": time_now,
@@ -108,8 +117,9 @@ def get_crypto_prices(url: str, payloads: list[dict]) -> CryptoPrices:
 
         validate_crypto_prices_for_schema(evaluate_crypto)
 
-        new_crypto = CryptoPrices(crypto_name, time_now, result_json_list)
-        logger.info(f'Obtenido correctamente: {new_crypto.__str__()}')
+        new_crypto = CryptoCurrencyPrices(crypto_name, time_now, result_json_list)
+
+        logger.info(f'* Obtenido correctamente: {new_crypto.__str__()}')
 
         return new_crypto
 
@@ -117,22 +127,22 @@ def get_crypto_prices(url: str, payloads: list[dict]) -> CryptoPrices:
         logger.error(f'Error en la obtencion de valores, error: "{e}"')
 
 
-def get_values_crypto_list(crypto_list: list[CryptoCurrency]) -> list[CryptoPrices]:
+def get_crypto_currency_prices_from_list(crypto_list: list[CryptoCurrency]) -> list[CryptoCurrencyPrices]:
     """ Retorno una la lista de Cryptos que llamaron a la API.
 
     :param crypto_list: list[CryptoCurrency]
-    :return: list[CryptoPrices]
+    :return: list[CryptoCurrencyPrices]
     """
     try:
-        logger.info(f'===========[ INICIANDO LA LISTA LLAMADOS A '
-                    f'LA API DE CRYPTOYA ]===========')
+        logger.info(f'***********[ INICIANDO LA LISTA LLAMADOS A '
+                    f'LA API DE CRYPTOYA ]***********')
 
         crypto_prices_list = []
 
         for crypto in crypto_list:
             url = crypto.get_url()
             param = crypto.get_parameter()
-            crypto_prices = get_crypto_prices(url, param)
+            crypto_prices = get_crypto_currency_prices(url, param)
 
             crypto_prices_list.append(crypto_prices)
 
@@ -142,11 +152,11 @@ def get_values_crypto_list(crypto_list: list[CryptoCurrency]) -> list[CryptoPric
         logger.error(f'Error en la obtencion de currency prices, error: "{e}"')
 
 
-def get_all_values_from_payload(payload_cryptos: list) -> list[CryptoPrices]:
+def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list[CryptoCurrencyPrices]:
     """ Retorno una la lista de Cryptos que llamaron a la API desde el PAYLOAD.
 
-    :param payload_cryptos: list
-    :return: list[CryptoPrices]
+    :param crypto_payloads: list
+    :return: list[CryptoCurrencyPrices]
     """
     try:
         logger.info(f'=========[ LLAMANDO CON EL PAYLOAD A '
@@ -154,8 +164,10 @@ def get_all_values_from_payload(payload_cryptos: list) -> list[CryptoPrices]:
 
         crypto_list = []
 
-        for crypto in payload_cryptos:
-            crypto_currency = get_crypto_prices(crypto[0], crypto[1])
+        for crypto in crypto_payloads:
+            url = crypto[0]
+            payload = crypto[1]
+            crypto_currency = get_crypto_currency_prices(url, payload)
             crypto_list.append(crypto_currency)
 
         return crypto_list
