@@ -1,6 +1,14 @@
-from functions.payloads import bitex_url, bitex_payloads, bitso_url,\
-    bitso_payloads, buda_url, buda_payloads, buenbit_url, buenbit_payloads
 from model.cryptoCurrency_model import CryptoCurrency
+from functions.payloads import (
+    bitex_payloads,
+    bitex_url,
+    bitso_payloads,
+    bitso_url,
+    buda_payloads,
+    buda_url,
+    buenbit_payloads,
+    buenbit_url,
+)
 
 
 class CryptosB(object):

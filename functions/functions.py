@@ -62,9 +62,9 @@ def get_response_by_url(url: str) -> dict:
     try:
         response = requests.get(url=url, timeout=time_out)
         return response.json()
+
     except Exception as e:
-        logger.error(f'Error en el retorno del response de '
-                     f'url: "{url}", error: "{e}"')
+        logger.error(f'Error en el retorno del response de url: "{url}", error: "{e}"')
 
 
 def get_crypto_currency_values_json(url: str, payloads: list[dict]) -> list[dict]:
@@ -111,9 +111,11 @@ def get_crypto_currency_prices(url: str, payloads: list[dict]) -> CryptoCurrency
         time_now = get_str_time_now()
         result_json_list = get_crypto_currency_values_json(url, payloads)
 
-        evaluate_crypto = {"crypto_name": crypto_name,
-                           "time": time_now,
-                           "values": result_json_list}
+        evaluate_crypto: dict[str, str, float] = {
+            "crypto_name": crypto_name,
+            "time": time_now,
+            "values": result_json_list
+        }
 
         validate_crypto_prices_for_schema(evaluate_crypto)
 
@@ -159,8 +161,7 @@ def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list[Crypt
     :return: list[CryptoCurrencyPrices]
     """
     try:
-        logger.info(f'=========[ LLAMANDO CON EL PAYLOAD A '
-                    f'LA API DE CRYPTOYA ]=========')
+        logger.info(f'=========[ LLAMANDO CON EL PAYLOAD A LA API DE CRYPTOYA ]=========')
 
         crypto_list = []
 
@@ -173,5 +174,4 @@ def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list[Crypt
         return crypto_list
 
     except Exception as e:
-        logger.error(f'Error en la obtencion de currency prices del PAYLOAD,'
-                     f' error: "{e}"')
+        logger.error(f'Error en la obtencion de currency prices del PAYLOAD, error: "{e}"')
