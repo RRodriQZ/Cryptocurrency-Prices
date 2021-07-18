@@ -7,7 +7,7 @@ from crypto.cryptos_B import CryptosB
 from view.crypto_view import View
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Ejemplo con "argenBTC", parametros extraidos del Payload
     controller = Controller(CryptoCurrency(argenBTC_url, argenBTC_payloads), View())
     controller.show_crypto_currency_prices()
