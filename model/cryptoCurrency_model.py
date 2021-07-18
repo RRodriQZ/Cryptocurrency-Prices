@@ -10,4 +10,4 @@ class CryptoCurrency(object):
         return self._parameter
 
     def __str__(self) -> str:
-        return f'url: {self.get_url()}, parameters: {self.get_parameter()}'
+        return f"url: {self.get_url()}, parameters: {self.get_parameter()}"

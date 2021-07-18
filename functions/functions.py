@@ -11,17 +11,17 @@ time_out = 60
 
 
 def get_crypto_name_by_url(url: str) -> str:
-    """ Retorno el nombre de exchange en mayuscula. """
-    return url.split('/')[4].upper()
+    """Retorno el nombre de exchange en mayuscula"""
+    return url.split("/")[4].upper()
 
 
 def get_str_time_now() -> str:
-    """ Retorno la fecha actual en formato de String. """
-    return datetime.now().strftime('%H:%M:%S %d-%m-%Y')
+    """Retorno la fecha actual en formato de String"""
+    return datetime.now().strftime("%H:%M:%S %d-%m-%Y")
 
 
 def get_str_payload(payload: dict) -> str:
-    """ Retorno el payload de parametros en formato de string apendeado de: '/'.
+    """Retorno el payload de parametros en formato de string apendeado de: '/'
 
     :param payload: dict
     :return: str
@@ -29,16 +29,15 @@ def get_str_payload(payload: dict) -> str:
     try:
         payload_str = ""
         for p in payload:
-            payload_str = payload_str + '/' + str(payload[p])
+            payload_str = payload_str + "/" + str(payload[p])
         return payload_str
 
     except Exception as e:
-        logger.error(f'Error en la transformacion del payload'
-                     f' de los parametros, {e}')
+        logger.error(f'Error en la transformacion del payload de los parametros, "{e}"')
 
 
 def get_url_complete(url: str, payload: dict) -> str:
-    """ Retorno la URL completa junto con su payload para llamar a la API.
+    """Retorno la URL completa junto con su payload para llamar a la API
 
     :param url: str
     :param payload: dict
@@ -50,11 +49,11 @@ def get_url_complete(url: str, payload: dict) -> str:
         return url_complete
 
     except Exception as e:
-        logger.error(f'Error en el retorno de la URL completa, error: {e}')
+        logger.error(f'Error en el retorno de la URL completa, error: "{e}"')
 
 
 def get_response_by_url(url: str) -> dict:
-    """ Retorno el response json del llamado a la API.
+    """Retorno el response json del llamado a la API
 
     :param url: str
     :return: dict
@@ -68,8 +67,7 @@ def get_response_by_url(url: str) -> dict:
 
 
 def get_crypto_currency_values_json(url: str, payloads: list[dict]) -> list[dict]:
-    """ Retorna el crypto_json con sus llamados por paramentos de
-    cambio de la moneda.
+    """Retorna el crypto_json con sus llamados por paramentos de cambio de la moneda
 
     :param url: str
     :param payloads: list[dict]
@@ -84,11 +82,11 @@ def get_crypto_currency_values_json(url: str, payloads: list[dict]) -> list[dict
 
             results = get_response_by_url(URL)
 
-            crypto_result['Parametros'] = payload
-            crypto_result['Compra_sin_comisiones'] = results['ask']
-            crypto_result['Compra_con_comisiones'] = results['totalAsk']
-            crypto_result['Venta_sin_comisiones'] = results['bid']
-            crypto_result['Venta_con_comisiones'] = results['totalBid']
+            crypto_result["Parametros"] = payload
+            crypto_result["Compra_sin_comisiones"] = results["ask"]
+            crypto_result["Compra_con_comisiones"] = results["totalAsk"]
+            crypto_result["Venta_sin_comisiones"] = results["bid"]
+            crypto_result["Venta_con_comisiones"] = results["totalBid"]
 
             result_list.append(crypto_result)
 
@@ -99,8 +97,7 @@ def get_crypto_currency_values_json(url: str, payloads: list[dict]) -> list[dict
 
 
 def get_crypto_currency_prices(url: str, payloads: list[dict]) -> CryptoCurrencyPrices:
-    """ Retorno el nuevo CryptoPrices armado con todos sus valores
-    llamados de su parameters.
+    """Retorno el nuevo CryptoPrices armado con todos sus valores llamados de su parameters
 
     :param url: str
     :param payloads: list[dict]
@@ -111,17 +108,17 @@ def get_crypto_currency_prices(url: str, payloads: list[dict]) -> CryptoCurrency
         time_now = get_str_time_now()
         result_json_list = get_crypto_currency_values_json(url, payloads)
 
-        evaluate_crypto: dict[str, str, float] = {
+        evaluate_crypto: dict[str, str, list[dict]] = {
             "crypto_name": crypto_name,
             "time": time_now,
-            "values": result_json_list
+            "values": result_json_list,
         }
 
         validate_crypto_prices_for_schema(evaluate_crypto)
 
         new_crypto = CryptoCurrencyPrices(crypto_name, time_now, result_json_list)
 
-        logger.info(f'* Obtenido correctamente: {new_crypto.__str__()}')
+        logger.info(f"* Obtenido correctamente: {new_crypto.__str__()}")
 
         return new_crypto
 
@@ -130,14 +127,15 @@ def get_crypto_currency_prices(url: str, payloads: list[dict]) -> CryptoCurrency
 
 
 def get_crypto_currency_prices_from_list(crypto_list: list[CryptoCurrency]) -> list[CryptoCurrencyPrices]:
-    """ Retorno una la lista de Cryptos que llamaron a la API.
+    """Retorno una la lista de Cryptos que llamaron a la API
 
     :param crypto_list: list[CryptoCurrency]
     :return: list[CryptoCurrencyPrices]
     """
     try:
-        logger.info(f'***********[ INICIANDO LA LISTA LLAMADOS A '
-                    f'LA API DE CRYPTOYA ]***********')
+        logger.info(
+            f"***********[ INICIANDO LA LISTA LLAMADOS A LA API DE CRYPTOYA ]***********"
+        )
 
         crypto_prices_list = []
 
@@ -155,13 +153,15 @@ def get_crypto_currency_prices_from_list(crypto_list: list[CryptoCurrency]) -> l
 
 
 def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list[CryptoCurrencyPrices]:
-    """ Retorno una la lista de Cryptos que llamaron a la API desde el PAYLOAD.
+    """Retorno una la lista de Cryptos que llamaron a la API desde el PAYLOAD
 
     :param crypto_payloads: list
     :return: list[CryptoCurrencyPrices]
     """
     try:
-        logger.info(f'=========[ LLAMANDO CON EL PAYLOAD A LA API DE CRYPTOYA ]=========')
+        logger.info(
+            f"=========[ LLAMANDO CON EL PAYLOAD A LA API DE CRYPTOYA ]========="
+        )
 
         crypto_list = []
 
@@ -174,4 +174,6 @@ def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list[Crypt
         return crypto_list
 
     except Exception as e:
-        logger.error(f'Error en la obtencion de currency prices del PAYLOAD, error: "{e}"')
+        logger.error(
+            f'Error en la obtencion de currency prices del PAYLOAD, error: "{e}"'
+        )

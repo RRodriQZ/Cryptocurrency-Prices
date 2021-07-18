@@ -9,4 +9,4 @@ class CryptoCurrencyPayload(object):
         return self._cripto_prices_list
 
     def __str__(self) -> str:
-        return f'[PAYLOAD]: {self.get_crypto_prices_payload_list()}'
+        return f"[PAYLOAD]: {self.get_crypto_prices_payload_list()}"
