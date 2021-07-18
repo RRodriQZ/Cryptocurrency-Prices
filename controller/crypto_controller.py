@@ -1,4 +1,5 @@
-from functions.functions import get_crypto_currency_prices_from_list, get_crypto_currency_prices
+from functions.functions import (get_crypto_currency_prices_from_list,
+                                 get_crypto_currency_prices)
 
 
 class Controller(object):

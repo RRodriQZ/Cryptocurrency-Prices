@@ -27,25 +27,33 @@ Limit: 60 requests per minute.
 # Pre Requirements 📋
 
 * **Python 3**
+* **Pipenv**
 
-# Setup Python Virtual Environment 🔧
-Windows CMD / Ubuntu COMMAND:
+# Setup Python Virtual Environment 🔧 #
+```cmd
+pip install pipenv
+```
+
+**Windows** CMD:
 ```cmd
 python -m venv venv
-cd venv\Scripts & .\activate
-cd .. & cd .. & pip install -r requirements.txt
+.\venv\Scripts\activate
+pip install -r requirements.txt
+```
+**Linux / MAC** command:
+```cmd
+python -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 # Running Python Script 🐼
-
 ```cmd
 python main.py
 ```
 **Unittest:**
-
 ```cmd
 python test.py -v
 ```
-
 # Author 🖋
 
 * Rodrigo Quispe - Developer - [RRodriQZ]
