@@ -14,5 +14,4 @@ class CryptoCurrencyPrices(object):
         return self._values
 
     def __str__(self) -> str:
-        return f'[Crypto]: "{self.get_crypto_name()}" ' \
-               f'[Time]: "{self.get_time()}" [Values]: {self.get_values()}'
+        return f'[Crypto]: "{self.get_crypto_name()}" [Time]: "{self.get_time()}" [Values]: {self.get_values()}'
