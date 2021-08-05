@@ -1,4 +1,4 @@
-from model.cryptoCurrency_model import CryptoCurrency
+from schemas.cryptoCurrency_schema import CryptoCurrencySchema
 from functions.payloads import CRYPTO_PAYLOAD_LIST
 from functions.functions import (
     get_crypto_currency_prices_from_payload,
@@ -17,9 +17,9 @@ import unittest
 
 class CryptoTest(unittest.TestCase):
     def setUp(self):
-        self.cryptoFacil = CryptoCurrency(criptoFacil_url, criptoFacil_payloads)
-        self.copter = CryptoCurrency(copter_url, copter_payloads)
-        self.ripio = CryptoCurrency(ripio_url, ripio_payloads)
+        self.cryptoFacil = CryptoCurrencySchema().load({"url":criptoFacil_url, "parameter":criptoFacil_payloads})
+        self.copter = CryptoCurrencySchema().load({"url":copter_url, "parameter":copter_payloads})
+        self.ripio = CryptoCurrencySchema().load({"url":ripio_url, "parameter": ripio_payloads})
         self.CRYPTO_LIST = CRYPTO_PAYLOAD_LIST
         self.crypto_list = []
 

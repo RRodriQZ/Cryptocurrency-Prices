@@ -1,13 +1,14 @@
-from schemas.validate_schema import validate_crypto_prices_for_schema
+from schemas.cryptoCurrencyPrices_schema import CryptoCurrencyPricesSchema
 from model.cryptoCurrencyPrices_model import CryptoCurrencyPrices
 from model.cryptoCurrency_model import CryptoCurrency
 from datetime import datetime
 from log.logger import Log
 import requests
 
+
 # GLOBAL VALUES #
 logger = Log().getLogger(__name__)
-time_out = 60
+time_out = 20
 
 
 def get_crypto_name_by_url(url: str) -> str:
@@ -44,7 +45,7 @@ def get_url_complete(url: str, payload: dict) -> str:
     :return: str
     """
     try:
-        payload = get_str_payload(payload)
+        payload = get_str_payload(payload=payload)
         url_complete = url + payload
         return url_complete
 
@@ -78,15 +79,15 @@ def get_crypto_currency_values_json(url: str, payloads: list[dict]) -> list[dict
 
         for payload in payloads:
             crypto_result = dict()
-            URL = get_url_complete(url, payload)
+            URL = get_url_complete(url=url, payload=payload)
 
-            results = get_response_by_url(URL)
+            results = get_response_by_url(url=URL)
 
-            crypto_result["Parametros"] = payload
-            crypto_result["Compra_sin_comisiones"] = results["ask"]
-            crypto_result["Compra_con_comisiones"] = results["totalAsk"]
-            crypto_result["Venta_sin_comisiones"] = results["bid"]
-            crypto_result["Venta_con_comisiones"] = results["totalBid"]
+            crypto_result["parametros"] = payload
+            crypto_result["compra_sin_comisiones"] = results["ask"]
+            crypto_result["compra_con_comisiones"] = results["totalAsk"]
+            crypto_result["venta_sin_comisiones"] = results["bid"]
+            crypto_result["venta_con_comisiones"] = results["totalBid"]
 
             result_list.append(crypto_result)
 
@@ -105,18 +106,12 @@ def get_crypto_currency_prices(url: str, payloads: list[dict]) -> CryptoCurrency
     """
     try:
         crypto_name = get_crypto_name_by_url(url)
-        time_now = get_str_time_now()
-        result_json_list = get_crypto_currency_values_json(url, payloads)
+        time = get_str_time_now()
+        values = get_crypto_currency_values_json(url, payloads)
 
-        evaluate_crypto: dict[str, str, list[dict]] = {
-            "crypto_name": crypto_name,
-            "time": time_now,
-            "values": result_json_list,
-        }
-
-        validate_crypto_prices_for_schema(evaluate_crypto)
-
-        new_crypto = CryptoCurrencyPrices(crypto_name, time_now, result_json_list)
+        new_crypto = CryptoCurrencyPricesSchema().load(
+            {"crypto_name": crypto_name, "time": time, "values": values}
+        )
 
         logger.info(f"* Obtenido correctamente: {new_crypto.__str__()}")
 
@@ -124,6 +119,14 @@ def get_crypto_currency_prices(url: str, payloads: list[dict]) -> CryptoCurrency
 
     except Exception as e:
         logger.error(f'Error en la obtencion de valores, error: "{e}"')
+
+
+def get_crypto_prices(crypto: CryptoCurrency) -> CryptoCurrencyPrices:
+    url = crypto.get_url()
+    parameters = crypto.get_parameter()
+    crypto_prices = get_crypto_currency_prices(url=url, payloads=parameters)
+
+    return crypto_prices
 
 
 def get_crypto_currency_prices_from_list(crypto_list: list[CryptoCurrency]) -> list[CryptoCurrencyPrices]:
@@ -140,9 +143,8 @@ def get_crypto_currency_prices_from_list(crypto_list: list[CryptoCurrency]) -> l
         crypto_prices_list = []
 
         for crypto in crypto_list:
-            url = crypto.get_url()
-            param = crypto.get_parameter()
-            crypto_prices = get_crypto_currency_prices(url, param)
+
+            crypto_prices = get_crypto_prices(crypto=crypto)
 
             crypto_prices_list.append(crypto_prices)
 
@@ -168,7 +170,7 @@ def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list[Crypt
         for crypto in crypto_payloads:
             url = crypto[0]
             payload = crypto[1]
-            crypto_currency = get_crypto_currency_prices(url, payload)
+            crypto_currency = get_crypto_currency_prices(url=url, payloads=payload)
             crypto_list.append(crypto_currency)
 
         return crypto_list
