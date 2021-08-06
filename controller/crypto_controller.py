@@ -1,7 +1,4 @@
-from functions.functions import (
-    get_crypto_currency_prices_from_list,
-    get_crypto_currency_prices,
-)
+from functions.functions import get_crypto_currency_prices_from_list, get_crypto_prices
 
 
 class Controller(object):
@@ -10,9 +7,7 @@ class Controller(object):
         self.view = view
 
     def show_crypto_currency_prices(self):
-        url = self.model.get_url()
-        parameters = self.model.get_parameter()
-        crypto = get_crypto_currency_prices(url=url, payloads=parameters)
+        crypto = get_crypto_prices(self.model.get_ArgentBTC_currency())
 
         self.view.show_crypto_currency(
             crypto.get_crypto_name(), crypto.get_time(), crypto.get_values()
