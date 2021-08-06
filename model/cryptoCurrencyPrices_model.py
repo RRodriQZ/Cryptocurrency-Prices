@@ -1,5 +1,5 @@
 class CryptoCurrencyPrices(object):
-    def __init__(self, crypto_name: str, time: str, values: list[dict]) -> None:
+    def __init__(self, crypto_name: str, time: str, values: list) -> None:
         self._crypto_name = crypto_name
         self._time = time
         self._values = values
@@ -10,7 +10,7 @@ class CryptoCurrencyPrices(object):
     def get_time(self) -> str:
         return self._time
 
-    def get_values(self) -> list[dict]:
+    def get_values(self) -> list:
         return self._values
 
     def __str__(self) -> str:

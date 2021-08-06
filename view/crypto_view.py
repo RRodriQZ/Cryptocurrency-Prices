@@ -7,11 +7,11 @@ class View(object):
         for value in crypto_values:
             print(f"*")
             print(f"[ PRICES ] *******************************")
-            print(f'* "Parametros": {value["Parametros"]}')
-            print(f'* "Compra S/comiciones": {value["Compra_sin_comisiones"]}')
-            print(f'* "Compra C/comiciones": {value["Compra_con_comisiones"]}')
-            print(f'* "Venta S/comisiones" : {value["Venta_sin_comisiones"]}')
-            print(f'* "Venta C/comisiones" : {value["Venta_con_comisiones"]}')
+            print(f'* "Parametros": {value["parametros"]}')
+            print(f'* "Compra S/comiciones": {value["compra_sin_comisiones"]}')
+            print(f'* "Compra C/comiciones": {value["compra_con_comisiones"]}')
+            print(f'* "Venta S/comisiones" : {value["venta_sin_comisiones"]}')
+            print(f'* "Venta C/comisiones" : {value["venta_con_comisiones"]}')
         print(f"******************************************")
 
     @staticmethod
@@ -24,9 +24,9 @@ class View(object):
             for value in crypto_values[i]:
                 print(f"*")
                 print(f"[ PRICES ] ************************************")
-                print(f'* "Parametros": {value["Parametros"]}')
-                print(f'* "Compra S/comiciones": {value["Compra_sin_comisiones"]}')
-                print(f'* "Compra C/comiciones": {value["Compra_con_comisiones"]}')
-                print(f'* "Venta S/comisiones" : {value["Venta_sin_comisiones"]}')
-                print(f'* "Venta C/comisiones" : {value["Venta_con_comisiones"]}')
+                print(f'* "Parametros": {value["parametros"]}')
+                print(f'* "Compra S/comiciones": {value["compra_sin_comisiones"]}')
+                print(f'* "Compra C/comiciones": {value["compra_con_comisiones"]}')
+                print(f'* "Venta S/comisiones" : {value["venta_sin_comisiones"]}')
+                print(f'* "Venta C/comisiones" : {value["venta_con_comisiones"]}')
                 print(f"***********************************************")
