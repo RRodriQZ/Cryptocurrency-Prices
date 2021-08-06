@@ -67,7 +67,7 @@ def get_response_by_url(url: str) -> dict:
         logger.error(f'Error en el retorno del response de url: "{url}", error: "{e}"')
 
 
-def get_crypto_currency_values_json(url: str, payloads: list[dict]) -> list[dict]:
+def get_crypto_currency_values_json(url: str, payloads: list) -> list:
     """Retorna el crypto_json con sus llamados por paramentos de cambio de la moneda
 
     :param url: str
@@ -97,7 +97,7 @@ def get_crypto_currency_values_json(url: str, payloads: list[dict]) -> list[dict
         logger.error(f'Error al llamar a la API, error: "{e}"')
 
 
-def get_crypto_currency_prices(url: str, payloads: list[dict]) -> CryptoCurrencyPrices:
+def get_crypto_currency_prices(url: str, payloads: list) -> CryptoCurrencyPrices:
     """Retorno el nuevo CryptoPrices armado con todos sus valores llamados de su parameters
 
     :param url: str
@@ -129,7 +129,7 @@ def get_crypto_prices(crypto: CryptoCurrency) -> CryptoCurrencyPrices:
     return crypto_prices
 
 
-def get_crypto_currency_prices_from_list(crypto_list: list[CryptoCurrency]) -> list[CryptoCurrencyPrices]:
+def get_crypto_currency_prices_from_list(crypto_list: list) -> list:
     """Retorno una la lista de Cryptos que llamaron a la API
 
     :param crypto_list: list[CryptoCurrency]
@@ -154,7 +154,7 @@ def get_crypto_currency_prices_from_list(crypto_list: list[CryptoCurrency]) -> l
         logger.error(f'Error en la obtencion de currency prices, error: "{e}"')
 
 
-def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list[CryptoCurrencyPrices]:
+def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list:
     """Retorno una la lista de Cryptos que llamaron a la API desde el PAYLOAD
 
     :param crypto_payloads: list
