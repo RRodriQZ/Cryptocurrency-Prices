@@ -17,9 +17,9 @@ import unittest
 
 class CryptoTest(unittest.TestCase):
     def setUp(self):
-        self.cryptoFacil = CryptoCurrencySchema().load({"url":criptoFacil_url, "parameter":criptoFacil_payloads})
-        self.copter = CryptoCurrencySchema().load({"url":copter_url, "parameter":copter_payloads})
-        self.ripio = CryptoCurrencySchema().load({"url":ripio_url, "parameter": ripio_payloads})
+        self.cryptoFacil = CryptoCurrencySchema().load({"url": criptoFacil_url, "parameter": criptoFacil_payloads})
+        self.copter = CryptoCurrencySchema().load({"url": copter_url, "parameter": copter_payloads})
+        self.ripio = CryptoCurrencySchema().load({"url": ripio_url, "parameter": ripio_payloads})
         self.CRYPTO_LIST = CRYPTO_PAYLOAD_LIST
         self.crypto_list = []
 
@@ -31,8 +31,8 @@ class CryptoTest(unittest.TestCase):
 
     def test_crypto_facil_values(self):
         url = self.cryptoFacil.get_url()
-        param = self.cryptoFacil.get_parameter()
-        cryptoFacil = get_crypto_currency_prices(url, param)
+        parameter = self.cryptoFacil.get_parameter()
+        cryptoFacil = get_crypto_currency_prices(url=url, payloads=parameter)
         length_values = len(cryptoFacil.get_values())
         crypto_name = cryptoFacil.get_crypto_name()
 
@@ -51,8 +51,8 @@ class CryptoTest(unittest.TestCase):
 
     def test_ripio_values(self):
         url = self.ripio.get_url()
-        param = self.ripio.get_parameter()
-        ripio = get_crypto_currency_prices(url, param)
+        parameter = self.ripio.get_parameter()
+        ripio = get_crypto_currency_prices(url=url, payloads=parameter)
         length_values = len(ripio.get_values())
         crypto_name = ripio.get_crypto_name()
 
@@ -67,7 +67,7 @@ class CryptoTest(unittest.TestCase):
         self.assertEqual(len(self.crypto_list), 3)
 
     def test_quantity_crypto_payload_is_eigth(self):
-        crypto_value_list = get_crypto_currency_prices_from_payload(self.CRYPTO_LIST)
+        crypto_value_list = get_crypto_currency_prices_from_payload(crypto_payloads=self.CRYPTO_LIST)
         crypto_prices_list = len(crypto_value_list)
 
         self.assertEqual(crypto_prices_list, 8)

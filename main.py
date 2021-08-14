@@ -6,7 +6,7 @@ from functions.payloads import CRYPTO_PAYLOAD_LIST
 from view.crypto_view import View
 
 
-if __name__ == "__main__":
+def main() -> None:
     # Example with "argenBTC", parameters extracted from Payload
     controller = Controller(CryptoArgentBTC(), View())
     controller.show_crypto_currency_prices()
@@ -16,6 +16,10 @@ if __name__ == "__main__":
     controller2.show_crypto_currency_prices_list()
 
     # Example with the list of cryptocurrencies
-    crypto_payload_list = get_crypto_currency_prices_from_payload(CRYPTO_PAYLOAD_LIST)
+    crypto_payload_list = get_crypto_currency_prices_from_payload(crypto_payloads=CRYPTO_PAYLOAD_LIST)
     controller3 = Controller(CryptoCurrencyPayload(crypto_payload_list), View())
     controller3.show_crypto_currency_prices_payload()
+
+
+if __name__ == "__main__":
+    main()

@@ -5,11 +5,11 @@ from marshmallow import Schema, fields, post_load
 class CurrencyValues(Schema):
     """CurrencyValues Schema"""
 
-    parametros = fields.Dict(attribute="parametros")
-    compra_sin_comisiones = fields.Float(attribute="compra_sin_comisiones")
-    compra_con_comisiones = fields.Float(attribute="compra_con_comisiones")
-    venta_sin_comisiones = fields.Float(attribute="venta_sin_comisiones")
-    venta_con_comisiones = fields.Float(attribute="venta_con_comisiones")
+    parameters = fields.Dict(attribute="parameters")
+    purchase_without_commissions = fields.Float(attribute="purchase_without_commissions")
+    purchase_with_commissions = fields.Float(attribute="purchase_with_commissions")
+    sale_without_commissions = fields.Float(attribute="sale_without_commissions")
+    sale_with_commissions = fields.Float(attribute="sale_with_commissions")
 
 
 class CryptoCurrencyPricesSchema(Schema):
