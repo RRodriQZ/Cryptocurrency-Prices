@@ -37,13 +37,13 @@ pip install pipenv
 ```cmd
 python -m venv venv
 .\venv\Scripts\activate
-pip install -r requirements.txt
+pip install -e .
 ```
 **Linux / MAC** command:
 ```cmd
 python -m venv venv
 source venv/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install -e .
 ```
 # Running Python Script 🐼
 ```cmd

@@ -12,17 +12,17 @@ time_out = 20
 
 
 def get_crypto_name_by_url(url: str) -> str:
-    """Retorno el nombre de exchange en mayuscula"""
+    """Returns the name of the exchange in uppercase"""
     return url.split("/")[4].upper()
 
 
 def get_str_time_now() -> str:
-    """Retorno la fecha actual en formato de String"""
+    """Return the current date in String format"""
     return datetime.now().strftime("%H:%M:%S %d-%m-%Y")
 
 
 def get_str_payload(payload: dict) -> str:
-    """Retorno el payload de parametros en formato de string apendeado de: '/'
+    """Return the parameter payload in string format depending on: '/'
 
     :param payload: dict
     :return: str
@@ -34,11 +34,11 @@ def get_str_payload(payload: dict) -> str:
         return payload_str
 
     except Exception as e:
-        logger.error(f'Error en la transformacion del payload de los parametros, "{e}"')
+        logger.error(f'Error in the transformation of the payload of the parameters, error: "{e}"')
 
 
 def get_url_complete(url: str, payload: dict) -> str:
-    """Retorno la URL completa junto con su payload para llamar a la API
+    """Return the full URL along with its payload to call the API
 
     :param url: str
     :param payload: dict
@@ -50,11 +50,11 @@ def get_url_complete(url: str, payload: dict) -> str:
         return url_complete
 
     except Exception as e:
-        logger.error(f'Error en el retorno de la URL completa, error: "{e}"')
+        logger.error(f'Full URL return failed, error: "{e}"')
 
 
 def get_response_by_url(url: str) -> dict:
-    """Retorno el response json del llamado a la API
+    """Return the json response of the API call
 
     :param url: str
     :return: dict
@@ -64,11 +64,11 @@ def get_response_by_url(url: str) -> dict:
         return response.json()
 
     except Exception as e:
-        logger.error(f'Error en el retorno del response de url: "{url}", error: "{e}"')
+        logger.error(f'Error in the return of the url response: "{url}", error: "{e}"')
 
 
 def get_crypto_currency_values_json(url: str, payloads: list) -> list:
-    """Retorna el crypto_json con sus llamados por paramentos de cambio de la moneda
+    """Returns the crypto_json with its calls for currency exchange parameters
 
     :param url: str
     :param payloads: list[dict]
@@ -83,45 +83,50 @@ def get_crypto_currency_values_json(url: str, payloads: list) -> list:
 
             results = get_response_by_url(url=URL)
 
-            crypto_result["parametros"] = payload
-            crypto_result["compra_sin_comisiones"] = results["ask"]
-            crypto_result["compra_con_comisiones"] = results["totalAsk"]
-            crypto_result["venta_sin_comisiones"] = results["bid"]
-            crypto_result["venta_con_comisiones"] = results["totalBid"]
+            crypto_result["parameters"] = payload
+            crypto_result["purchase_without_commissions"] = results["ask"]
+            crypto_result["purchase_with_commissions"] = results["totalAsk"]
+            crypto_result["sale_without_commissions"] = results["bid"]
+            crypto_result["sale_with_commissions"] = results["totalBid"]
 
             result_list.append(crypto_result)
 
         return result_list
 
     except Exception as e:
-        logger.error(f'Error al llamar a la API, error: "{e}"')
+        logger.error(f'API call failed, error: "{e}"')
 
 
 def get_crypto_currency_prices(url: str, payloads: list) -> CryptoCurrencyPrices:
-    """Retorno el nuevo CryptoPrices armado con todos sus valores llamados de su parameters
+    """Return the new CryptoPrices armed with all its values called from its parameters
 
     :param url: str
     :param payloads: list[dict]
     :return: CryptoCurrencyPrices
     """
     try:
-        crypto_name = get_crypto_name_by_url(url)
+        crypto_name = get_crypto_name_by_url(url=url)
         time = get_str_time_now()
-        values = get_crypto_currency_values_json(url, payloads)
+        values = get_crypto_currency_values_json(url=url, payloads=payloads)
 
         new_crypto = CryptoCurrencyPricesSchema().load(
             {"crypto_name": crypto_name, "time": time, "values": values}
         )
 
-        logger.info(f"* Obtenido correctamente: {new_crypto.__str__()}")
+        logger.info(f"* Successfully obtained: {new_crypto.__str__()}")
 
         return new_crypto
 
     except Exception as e:
-        logger.error(f'Error en la obtencion de valores, error: "{e}"')
+        logger.error(f'Error in obtaining values, error: "{e}"')
 
 
 def get_crypto_prices(crypto: CryptoCurrency) -> CryptoCurrencyPrices:
+    """Return the price of crypto
+
+    :param crypto: CryptoCurrency
+    :return: CryptoCurrencyPrices
+    """
     url = crypto.get_url()
     parameters = crypto.get_parameter()
     crypto_prices = get_crypto_currency_prices(url=url, payloads=parameters)
@@ -130,14 +135,14 @@ def get_crypto_prices(crypto: CryptoCurrency) -> CryptoCurrencyPrices:
 
 
 def get_crypto_currency_prices_from_list(crypto_list: list) -> list:
-    """Retorno una la lista de Cryptos que llamaron a la API
+    """Return a the list of Cryptos that called the API
 
     :param crypto_list: list[CryptoCurrency]
     :return: list[CryptoCurrencyPrices]
     """
     try:
         logger.info(
-            f"***********[ INICIANDO LA LISTA LLAMADOS A LA API DE CRYPTOYA ]***********"
+            f"***********[ STARTING THE LIST CALLED TO THE CRYPTOYA API ]***********"
         )
 
         crypto_prices_list = []
@@ -151,18 +156,18 @@ def get_crypto_currency_prices_from_list(crypto_list: list) -> list:
         return crypto_prices_list
 
     except Exception as e:
-        logger.error(f'Error en la obtencion de currency prices, error: "{e}"')
+        logger.error(f'Error in obtaining currency prices, error: "{e}"')
 
 
 def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list:
-    """Retorno una la lista de Cryptos que llamaron a la API desde el PAYLOAD
+    """Returns the list of Cryptos that called the API from PAYLOAD
 
     :param crypto_payloads: list
     :return: list[CryptoCurrencyPrices]
     """
     try:
         logger.info(
-            f"=========[ LLAMANDO CON EL PAYLOAD A LA API DE CRYPTOYA ]========="
+            f"=========[ CALLING THE CRYPTOYA API WITH PAYLOAD ]========="
         )
 
         crypto_list = []
@@ -177,5 +182,5 @@ def get_crypto_currency_prices_from_payload(crypto_payloads: list) -> list:
 
     except Exception as e:
         logger.error(
-            f'Error en la obtencion de currency prices del PAYLOAD, error: "{e}"'
+            f'Error in obtaining currency prices from PAYLOAD, error: "{e}"'
         )
