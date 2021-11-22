@@ -26,37 +26,18 @@ Limit: 60 requests per minute.
 
 # Pre Requirements 📋
 
-* **Python 3**-**Pipenv** / **Docker**
+* **Docker**
 
-# Setup Python Virtual Environment 🔧 #
-```cmd
-pip install pipenv
-```
-
-**Windows** CMD:
-```cmd
-python -m venv venv
-.\venv\Scripts\activate
-pip install -e .
-```
-**Linux / MAC** command:
-```cmd
-python -m venv venv
-source venv/bin/activate
-python -m pip install -e .
-```
-# Running Python Script 🐼
-```cmd
-python main.py
-```
-**Unittest:**
-```cmd
-python test.py -v
-```
 # Running Docker 🐳
-```cmd
+```
 docker build -t crypto .
+```
+```
 docker run -it crypto
+```
+Unittest:
+```
+docker run crypto python test.py -v
 ```
 # Author 🖋
 

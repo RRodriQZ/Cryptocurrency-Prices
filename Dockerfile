@@ -1,11 +1,15 @@
-FROM alpine:3.10
+FROM python:3.9-slim
 
-RUN apk add --no-cache python3-dev && pip3 install --upgrade pip
+RUN apt-get update
 
 WORKDIR /crypto
 
 COPY . /crypto
 
-RUN pip3 --no-cache-dir install -e .
+RUN pip install poetry
+
+RUN poetry export -f requirements.txt --output requirements.txt
+
+RUN pip install -r requirements.txt
 
 CMD ["python3", "main.py"]
