@@ -11,14 +11,10 @@
 .idea/
 
 # Virtual Environment
-venv/
 *.pyc
 
 # Logs
 log/LOG.log
-
-# Installer logs
-**/*.egg-info
 
 # Cache
 __pycache__/
